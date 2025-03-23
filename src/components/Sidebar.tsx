@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
 	FortificationType,
 	FilterGroup,
-	FilterOption,
 } from '../types/fortification';
 
 interface SidebarProps {
