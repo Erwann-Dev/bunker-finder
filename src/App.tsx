@@ -172,7 +172,7 @@ function App() {
 					}`}
 				>
 					<div
-						className={`md:w-64 w-full h-full overflow-auto ${
+						className={`md:w-64 w-full h-[calc(100vh-4rem)] overflow-auto ${
 							isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
 						} transition-transform duration-300 ease-in-out`}
 					>

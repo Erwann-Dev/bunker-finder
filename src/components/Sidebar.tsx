@@ -145,7 +145,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	return (
 		<div className="h-full flex flex-col bg-white dark:bg-gray-800 overflow-hidden">
-			<div className="p-4">
+			<div className="p-4 pb-6 flex flex-col h-full overflow-hidden">
 				<div className="mb-4">
 					<h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
 						{t('sidebar.title')}
@@ -185,8 +185,20 @@ const Sidebar: React.FC<SidebarProps> = ({
 					</div>
 				</div>
 
+				{/* Filtered count display */}
+				<div className="px-4 py-2 mb-4 text-sm text-gray-600 dark:text-gray-300 rounded-md bg-gray-50 dark:bg-gray-700">
+					<strong>{filteredFortifications.length}</strong>{' '}
+					{t('sidebar.fortificationsFound')}
+					{isDataEnriched && (
+						<div className="mt-1 text-xs text-blue-600 dark:text-blue-400">
+							<span className="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>
+							{t('sidebar.enrichedData')}
+						</div>
+					)}
+				</div>
+
 				{filterGroups.length > 0 && (
-					<div className="mb-4">
+					<div className="flex-1 overflow-hidden flex flex-col">
 						<div className="flex justify-between items-center mb-2">
 							<h3 className="text-lg font-medium text-gray-900 dark:text-white">
 								{t('sidebar.filters')}
@@ -201,101 +213,94 @@ const Sidebar: React.FC<SidebarProps> = ({
 							)}
 						</div>
 
-						{filterGroups
-							.filter(group => group.id !== 'period')
-							.map(group => (
-								<div key={group.id} className="mb-3">
-									<div
-										className="flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 px-2 py-1 rounded-md"
-										onClick={() =>
-											toggleFilterSection(group.id, !expandedSections[group.id])
-										}
-									>
-										<h4 className="text-md font-medium text-gray-800 dark:text-gray-200">
-											{t(`sidebar.${group.id}`) || group.name}
-										</h4>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className={`h-5 w-5 transform transition-transform ${
-												expandedSections[group.id] ? 'rotate-180' : ''
-											}`}
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
+						<div className="flex-1 overflow-y-auto pr-1">
+							{filterGroups
+								.filter(group => group.id !== 'period')
+								.map(group => (
+									<div key={group.id} className="mb-3">
+										<div
+											className="flex justify-between items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 px-2 py-1 rounded-md"
+											onClick={() =>
+												toggleFilterSection(
+													group.id,
+													!expandedSections[group.id],
+												)
+											}
 										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M19 9l-7 7-7-7"
-											/>
-										</svg>
-									</div>
-
-									{expandedSections[group.id] && (
-										<div className="ml-2 mt-1 space-y-1 max-h-[calc(100vh-250px)] overflow-y-auto">
-											<div
-												className={`flex items-center px-2 py-1 rounded-md cursor-pointer ${
-													!activeFilters[group.id]
-														? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100'
-														: 'hover:bg-gray-100 dark:hover:bg-gray-700'
+											<h4 className="text-md font-medium text-gray-800 dark:text-gray-200">
+												{t(`sidebar.${group.id}`) || group.name}
+											</h4>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												className={`h-5 w-5 transform transition-transform ${
+													expandedSections[group.id] ? 'rotate-180' : ''
 												}`}
-												onClick={() => handleFilterChange(group.id, null)}
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke="currentColor"
 											>
-												<span
-													className={
-														!activeFilters[group.id]
-															? 'font-medium'
-															: 'text-gray-600 dark:text-gray-300'
-													}
-												>
-													{t('sidebar.allTypes')}
-												</span>
-											</div>
-											{group.options.map(option => (
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													strokeWidth={2}
+													d="M19 9l-7 7-7-7"
+												/>
+											</svg>
+										</div>
+
+										{expandedSections[group.id] && (
+											<div className="ml-2 mt-1 mb-4 space-y-1 max-h-[70vh] overflow-y-auto">
 												<div
-													key={option.id}
-													className={`flex items-center justify-between px-2 py-1 rounded-md cursor-pointer ${
-														activeFilters[group.id] === option.value
+													className={`flex items-center px-2 py-1 rounded-md cursor-pointer ${
+														!activeFilters[group.id]
 															? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100'
 															: 'hover:bg-gray-100 dark:hover:bg-gray-700'
 													}`}
-													onClick={() =>
-														handleFilterChange(group.id, option.value)
-													}
+													onClick={() => handleFilterChange(group.id, null)}
 												>
 													<span
 														className={
-															activeFilters[group.id] === option.value
+															!activeFilters[group.id]
 																? 'font-medium'
 																: 'text-gray-600 dark:text-gray-300'
 														}
 													>
-														{option.label}{' '}
-													</span>
-													<span className="text-xs text-gray-500 dark:text-gray-400">
-														{option.count}
+														{t('sidebar.allTypes')}
 													</span>
 												</div>
-											))}
-										</div>
-									)}
-								</div>
-							))}
+												{group.options.map(option => (
+													<div
+														key={option.id}
+														className={`flex items-center justify-between px-2 py-1 rounded-md cursor-pointer ${
+															activeFilters[group.id] === option.value
+																? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100'
+																: 'hover:bg-gray-100 dark:hover:bg-gray-700'
+														}`}
+														onClick={() =>
+															handleFilterChange(group.id, option.value)
+														}
+													>
+														<span
+															className={
+																activeFilters[group.id] === option.value
+																	? 'font-medium'
+																	: 'text-gray-600 dark:text-gray-300'
+															}
+														>
+															{option.label}{' '}
+														</span>
+														<span className="text-xs text-gray-500 dark:text-gray-400">
+															{option.count}
+														</span>
+													</div>
+												))}
+											</div>
+										)}
+									</div>
+								))}
+						</div>
 					</div>
 				)}
-
-				{/* Filtered count display */}
-				<div className="px-4 py-2 mb-4 text-sm text-gray-600 dark:text-gray-300 rounded-md bg-gray-50 dark:bg-gray-700">
-					<strong>{filteredFortifications.length}</strong>{' '}
-					{t('sidebar.fortificationsFound')}
-					{isDataEnriched && (
-						<div className="mt-1 text-xs text-blue-600 dark:text-blue-400">
-							<span className="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>
-							{t('sidebar.enrichedData')}
-						</div>
-					)}
-				</div>
 			</div>
 		</div>
 	);
