@@ -1,0 +1,53 @@
+export default {
+	header: {
+		title: 'Carte des Fortifications Françaises',
+		titleShort: 'Fortifications',
+		toggleSidebar: 'Afficher/Masquer le panneau',
+		toggleDarkMode: 'Mode jour/nuit',
+	},
+	sidebar: {
+		title: 'Fortifications',
+		search: 'Rechercher',
+		searchPlaceholder: 'Rechercher par nom...',
+		filterByType: 'Filtrer par Type',
+		allTypes: 'Tous les Types',
+		filters: 'Filtres',
+		clearAll: 'Effacer tout',
+		showMore: 'Voir plus ({{count}})',
+		showLess: 'Voir moins',
+		fortificationsFound: 'fortifications trouvées',
+		enrichedData: 'Données enrichies disponibles',
+		// Filter group names
+		type: 'Type',
+		period: 'Période',
+		region: 'Région',
+	},
+	map: {
+		unknownFortification: 'Fortification Inconnue',
+		type: 'Type',
+		address: 'Adresse',
+		region: 'Région',
+		period: 'Période',
+		style: 'Style',
+		description: 'Description',
+		externalLinks: 'Liens externes',
+		enrichData: "Obtenir plus d'informations",
+		dataUpdated: 'Données mises à jour: {{date}}',
+		notes: 'Notes',
+		notSpecified: 'Non spécifié',
+		noFortificationsFound:
+			'Aucune fortification trouvée correspondant à vos critères',
+		searchingFor: 'Recherche pour',
+		resultsFound: 'résultats trouvés',
+		ignoresAccents: 'La recherche ignore les accents',
+		recenterFrance: 'Recentrer sur la France',
+	},
+	fortification: {
+		searchMore: 'Rechercher sur Google',
+	},
+	errors: {
+		loadingData: 'Erreur lors du chargement des données',
+		tryAgain: 'Réessayer',
+	},
+	loading: 'Chargement',
+};

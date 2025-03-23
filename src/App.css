@@ -1,0 +1,231 @@
+/* Custom styles for the fortification map application */
+
+/* Empty App.css to avoid conflicts */
+
+/* Leaflet Map Fixes */
+.leaflet-container {
+	height: 100% !important;
+	width: 100% !important;
+	z-index: 1;
+	/* Forcer le conteneur à prendre tout l'espace disponible */
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+}
+
+/* Force map container size */
+.leaflet-map-container {
+	min-height: 100vh !important;
+}
+
+/* Style pour le bouton recentrer */
+.leaflet-control-recenter {
+	background: none !important;
+	box-shadow: none !important;
+}
+
+.recenter-button {
+	width: 36px !important;
+	height: 36px !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+	background-color: white;
+	border: 2px solid rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+	transition: background-color 0.2s, transform 0.1s;
+}
+
+.recenter-button:hover {
+	background-color: #f4f4f4;
+	transform: scale(1.05);
+}
+
+.recenter-button:active {
+	transform: scale(0.95);
+}
+
+/* Mode sombre pour le bouton */
+.dark .recenter-button {
+	background-color: #374151;
+	color: #e5e7eb;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .recenter-button:hover {
+	background-color: #4b5563;
+}
+
+/* Styles pour la div enveloppant MapContainer */
+[class*='FortificationMap'] > div {
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* Ensure all parent containers take full height */
+html,
+body,
+#root {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+/* Fix for layout containers */
+#root > div,
+#root > div > div {
+	height: 100% !important;
+	min-height: 0 !important;
+}
+
+/* Force the main content area to take full height */
+.flex-1 {
+	flex: 1 1 0% !important;
+	min-height: 0 !important;
+}
+
+/* Fix for Safari and other browsers */
+.h-screen {
+	height: 100vh;
+	height: -webkit-fill-available;
+}
+
+/* Improve marker cluster styling for better mobile visibility */
+.marker-cluster-custom {
+	background-clip: padding-box;
+	border-radius: 50%;
+}
+
+/* Ensure map controls are more touch-friendly */
+.leaflet-control-zoom a,
+.leaflet-control-zoom button {
+	width: 36px !important;
+	height: 36px !important;
+	line-height: 36px !important;
+	font-size: 18px !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	user-select: none;
+}
+
+.leaflet-control-zoom-in {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-control-zoom button {
+	padding: 0;
+	margin: 0;
+	background-color: white;
+	color: #333;
+	font-weight: bold;
+	text-align: center;
+	border: none;
+	border-radius: 0;
+	box-sizing: border-box;
+}
+
+.leaflet-control-zoom button:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+.leaflet-control-zoom button:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.leaflet-control-zoom button:hover {
+	background-color: #f4f4f4;
+}
+
+/* Mode sombre pour les contrôles de zoom */
+.dark .leaflet-control-zoom button {
+	background-color: #374151;
+	color: #e5e7eb;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .leaflet-control-zoom button:hover {
+	background-color: #4b5563;
+}
+
+/* Ensure controls don't overlap on mobile */
+@media (max-width: 768px) {
+	.leaflet-bottom.leaflet-right {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 10px;
+	}
+}
+
+/* Custom animation for sidebar */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.sidebar-container {
+	will-change: transform, opacity, width;
+}
+
+/* Ensure responsive layout */
+@media (max-width: 768px) {
+	.leaflet-control-zoom {
+		margin-bottom: 40px !important;
+	}
+}
+
+/* Ensure all map elements are properly displayed */
+.leaflet-control-container {
+	position: absolute;
+	z-index: 1000;
+}
+
+/* Styles spécifiques pour les contrôles de la carte */
+.leaflet-control-zoom {
+	margin-bottom: 10px !important;
+}
+
+/* Améliore la visibilité sur mobile */
+@media (max-width: 768px) {
+	.leaflet-control-zoom {
+		margin-bottom: 40px !important;
+	}
+}
+
+/* Group home and zoom controls in a single box */
+.leaflet-control-container .leaflet-right {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.leaflet-control-container .leaflet-right > div {
+	background: white;
+	border-radius: 4px;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark mode for the control box */
+.dark .leaflet-control-container .leaflet-right > div {
+	background: #374151;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+}
