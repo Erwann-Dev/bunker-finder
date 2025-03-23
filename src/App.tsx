@@ -4,10 +4,10 @@ import './App.css';
 import FortificationMap from './components/FortificationMap';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import useGeoJSON from './hooks/useGeoJSON';
 
 // Import i18n instance
 import './i18n';
+import useGeoJSON from './hooks/useGeoJSON';
 
 function App() {
 	const { t } = useTranslation();
@@ -48,7 +48,7 @@ function App() {
 		enrichFortification,
 		filters,
 		isDataEnriched,
-	} = useGeoJSON('assets/export2.geojson');
+	} = useGeoJSON('assets/export2.geojson.gz');
 
 	// Check if we're on mobile
 	useEffect(() => {

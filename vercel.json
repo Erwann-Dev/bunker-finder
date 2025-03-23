@@ -1,0 +1,17 @@
+{
+	"headers": [
+		{
+			"source": "/assets/(.*)\\.gz$",
+			"headers": [
+				{
+					"key": "Content-Encoding",
+					"value": "gzip"
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			]
+		}
+	]
+}

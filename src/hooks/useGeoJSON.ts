@@ -279,6 +279,9 @@ const useGeoJSON = (jsonPath: string): UseGeoJSONResult => {
 				setLoading(true);
 				setError(null);
 
+				// Check if file is gzipped
+				const isGzipped = jsonPath.endsWith('.gz');
+
 				const response = await fetch(jsonPath);
 
 				if (!response.ok) {
@@ -287,7 +290,34 @@ const useGeoJSON = (jsonPath: string): UseGeoJSONResult => {
 					);
 				}
 
-				const data = await response.json();
+				let data;
+
+				if (isGzipped) {
+					// Handle gzipped data
+					const arrayBuffer = await response.arrayBuffer();
+					// Use pako or browser's built-in decompression if available
+					try {
+						// Modern browsers support DecompressionStream
+						if ('DecompressionStream' in window) {
+							const ds = new DecompressionStream('gzip');
+							const decompressedStream = new Response(
+								arrayBuffer,
+							).body!.pipeThrough(ds);
+							const decompressedResponse = new Response(decompressedStream);
+							data = await decompressedResponse.json();
+						} else {
+							throw new Error('DecompressionStream not supported');
+						}
+					} catch (decompressError) {
+						console.error('Decompression error:', decompressError);
+						throw new Error(
+							'Failed to decompress gzipped GeoJSON. Try using an uncompressed version in production.',
+						);
+					}
+				} else {
+					// Handle regular JSON
+					data = await response.json();
+				}
 
 				// Check if this is standard GeoJSON or OSM format
 				if (data.type === 'FeatureCollection' && data.features) {
