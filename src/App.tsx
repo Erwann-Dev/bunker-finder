@@ -152,7 +152,7 @@ function App() {
 	}
 
 	return (
-		<div className="h-screen w-screen flex flex-col overflow-hidden">
+		<div className="h-screen w-screen flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-900">
 			<Header
 				toggleSidebar={toggleSidebar}
 				isSidebarOpen={isSidebarOpen}
@@ -166,13 +166,11 @@ function App() {
 				{/* Sidebar avec animation */}
 				<div
 					className={`sidebar-container flex-shrink-0 border-r border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 ease-in-out ${
-						isSidebarOpen ? 'md:w-64 w-full opacity-100' : 'w-0 opacity-0'
-					} ${
-						isMobile ? 'absolute z-20 h-full bg-white dark:bg-gray-800' : ''
-					}`}
+						isSidebarOpen ? 'md:w-72 w-full opacity-100' : 'w-0 opacity-0'
+					} ${isMobile ? 'absolute z-20 h-full' : ''}`}
 				>
 					<div
-						className={`md:w-64 w-full h-[calc(100vh-4rem)] overflow-auto ${
+						className={`md:w-72 w-full h-[calc(100vh-4rem)] overflow-auto ${
 							isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
 						} transition-transform duration-300 ease-in-out`}
 					>
@@ -191,7 +189,7 @@ function App() {
 				{/* Backdrop overlay for mobile when sidebar is open */}
 				{isMobile && isSidebarOpen && (
 					<div
-						className="fixed inset-0 bg-black bg-opacity-50 z-10"
+						className="fixed inset-0 bg-black bg-opacity-50 z-10 backdrop-blur-sm"
 						onClick={toggleSidebar}
 						aria-hidden="true"
 					/>
@@ -199,7 +197,7 @@ function App() {
 
 				{/* Main content */}
 				<div
-					className="flex-1 h-full w-full overflow-hidden transition-all duration-300 ease-in-out"
+					className="flex-1 h-full w-full overflow-hidden transition-all duration-300 ease-in-out rounded-tl-xl shadow-inner"
 					style={{ position: 'relative', minHeight: 0 }}
 					data-loaded={appLoaded}
 				>

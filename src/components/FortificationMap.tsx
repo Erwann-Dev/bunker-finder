@@ -17,9 +17,7 @@ import {
 	Map as LeafletMap,
 } from 'leaflet';
 import L from 'leaflet';
-import {
-	FortificationType,
-} from '../types/fortification';
+import { FortificationType } from '../types/fortification';
 
 // Import Leaflet styles directly in component
 import 'leaflet/dist/leaflet.css';
@@ -435,6 +433,36 @@ const FortificationMap: React.FC<FortificationMapProps> = ({
 		window.open(searchUrl, '_blank', 'noopener,noreferrer');
 	};
 
+	// Function to open location in Google Maps
+	const openGoogleMaps = (fort: FortificationType) => {
+		// Get coordinates depending on geometry type
+		let lat = 0;
+		let lng = 0;
+
+		if (fort.geometry && fort.geometry.type === 'Point') {
+			// For Point geometries, coordinates are [longitude, latitude]
+			lng = fort.geometry.coordinates[0];
+			lat = fort.geometry.coordinates[1];
+		} else if (
+			fort.geometry &&
+			fort.geometry.type === 'Polygon' &&
+			fort.geometry.coordinates[0].length > 0
+		) {
+			// For Polygon geometries, calculate center point
+			const center = getPolygonCenter(fort.geometry.coordinates);
+			lat = center[0];
+			lng = center[1];
+		}
+
+		// Create Google Maps URL with coordinates
+		if (lat !== 0 && lng !== 0) {
+			const mapsUrl = `https://www.google.com/maps?q=${lat.toFixed(
+				6,
+			)},${lng.toFixed(6)}`;
+			window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+		}
+	};
+
 	const renderFeature = (fort: FortificationType, index: number) => {
 		if (!fort.geometry) {
 			return null;
@@ -693,6 +721,12 @@ const FortificationMap: React.FC<FortificationMapProps> = ({
 			window.open(searchUrl, '_blank', 'noopener,noreferrer');
 		};
 
+		// Function to handle opening in Google Maps
+		const handleOpenGoogleMaps = (e: React.MouseEvent<HTMLButtonElement>) => {
+			e.stopPropagation();
+			openGoogleMaps(fort);
+		};
+
 		return (
 			<div
 				className="popup-content max-w-sm overflow-y-auto"
@@ -726,6 +760,27 @@ const FortificationMap: React.FC<FortificationMapProps> = ({
 							/>
 						</svg>
 						{t('fortification.viewImages')}
+					</button>
+
+					<button
+						onClick={handleOpenGoogleMaps}
+						className="w-full py-2 bg-green-100 hover:bg-green-200 dark:bg-green-900 dark:hover:bg-green-800 text-green-800 dark:text-green-100 rounded-md text-sm font-medium flex items-center justify-center"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-4 w-4 mr-1"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+							/>
+						</svg>
+						{t('fortification.openInGoogleMaps')}
 					</button>
 				</div>
 

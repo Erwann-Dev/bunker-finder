@@ -43,12 +43,12 @@ const Header: React.FC<HeaderProps> = ({
 	};
 
 	return (
-		<header className="bg-white dark:bg-gray-800 shadow-md h-16 flex items-center">
+		<header className="bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg h-16 flex items-center transition-all duration-300">
 			<div className="container mx-auto px-4 flex justify-between items-center">
 				<div className="flex items-center">
 					<button
 						onClick={toggleSidebar}
-						className="p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 mr-2"
+						className="p-2 rounded-md text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 mr-3 transition-all duration-200"
 						aria-label={t('header.toggleSidebar')}
 					>
 						<span className="sr-only">{t('header.toggleSidebar')}</span>
@@ -85,9 +85,9 @@ const Header: React.FC<HeaderProps> = ({
 						)}
 					</button>
 					<h1
-						className={`font-bold text-gray-800 dark:text-white ${
+						className={`font-bold text-white ${
 							isMobile ? 'text-lg' : 'text-xl'
-						}`}
+						} tracking-wide`}
 					>
 						{isMobile
 							? t('header.titleShort') || t('header.title')
@@ -103,12 +103,16 @@ const Header: React.FC<HeaderProps> = ({
 							<select
 								onChange={e => changeLanguage(e.target.value)}
 								value={i18n.language}
-								className="appearance-none bg-transparent border border-gray-300 dark:border-gray-600 rounded-md p-1.5 pr-8 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+								className="appearance-none bg-white/10 border border-white/20 rounded-md p-1.5 pr-8 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200"
 							>
-								<option value="en">English</option>
-								<option value="fr">Français</option>
+								<option value="en" className="text-gray-800">
+									English
+								</option>
+								<option value="fr" className="text-gray-800">
+									Français
+								</option>
 							</select>
-							<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-200">
+							<div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
 								<svg
 									className="fill-current h-4 w-4"
 									xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({
 						{/* Dark Mode Toggle */}
 						<button
 							onClick={toggleDarkMode}
-							className="p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="p-2 rounded-md text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200"
 							aria-label={t('header.toggleDarkMode')}
 						>
 							<span className="sr-only">{t('header.toggleDarkMode')}</span>
@@ -166,7 +170,7 @@ const Header: React.FC<HeaderProps> = ({
 					<div className="flex items-center">
 						<button
 							onClick={toggleDarkMode}
-							className="p-2 rounded-md text-gray-700 dark:text-gray-200 mr-2"
+							className="p-2 rounded-md text-white hover:bg-white/10 mr-2 transition-all duration-200"
 							aria-label={t('header.toggleDarkMode')}
 						>
 							{isDarkMode ? (
@@ -206,11 +210,15 @@ const Header: React.FC<HeaderProps> = ({
 							<select
 								onChange={e => changeLanguage(e.target.value)}
 								value={i18n.language}
-								className="appearance-none bg-transparent border border-gray-300 dark:border-gray-600 rounded-md p-1 text-gray-700 dark:text-gray-200"
+								className="appearance-none bg-white/10 border border-white/20 rounded-md p-1 text-white"
 								aria-label="Change language"
 							>
-								<option value="en">EN</option>
-								<option value="fr">FR</option>
+								<option value="en" className="text-gray-800">
+									EN
+								</option>
+								<option value="fr" className="text-gray-800">
+									FR
+								</option>
 							</select>
 						</div>
 					</div>

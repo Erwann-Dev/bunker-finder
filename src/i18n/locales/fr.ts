@@ -47,6 +47,7 @@ export default {
 	fortification: {
 		searchMore: 'Rechercher sur Google',
 		viewImages: 'Voir les images sur Google',
+		openInGoogleMaps: 'Ouvrir dans Google Maps',
 	},
 	errors: {
 		loadingData: 'Erreur lors du chargement des données',
