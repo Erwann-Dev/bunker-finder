@@ -17,7 +17,13 @@ import {
 	Map as LeafletMap,
 } from 'leaflet';
 import L from 'leaflet';
-import { FortificationType } from '../types/fortification';
+import {
+	FortificationType,
+	FilterGroup,
+	FilterOption,
+} from '../types/fortification';
+import useGeoJSON from '../hooks/useGeoJSON';
+import { Position } from 'geojson';
 
 // Import Leaflet styles directly in component
 import 'leaflet/dist/leaflet.css';
@@ -294,16 +300,103 @@ const FortificationMap: React.FC<FortificationMapProps> = ({
 		mapRef.current = map;
 	}, []);
 
+	// Get filter groups
+	const filterGroups = useMemo(() => {
+		const groups: FilterGroup[] = [];
+
+		// Type filter group
+		const typeOptions: FilterOption[] = [];
+		const typeCounts: Record<string, number> = {};
+
+		// Region filter group (for French data)
+		const regionOptions: FilterOption[] = [];
+		const regionCounts: Record<string, number> = {};
+
+		// Collect all filter options and counts
+		fortifications.forEach(fort => {
+			// Extract type (prioritize chptico, fallback to historic)
+			const type = fort.properties.chptico || fort.properties.historic;
+			if (type) {
+				if (!typeCounts[type]) {
+					typeCounts[type] = 0;
+				}
+				typeCounts[type]++;
+			}
+
+			// Extract region
+			const region = fort.properties.chpreg;
+			if (region) {
+				if (!regionCounts[region]) {
+					regionCounts[region] = 0;
+				}
+				regionCounts[region]++;
+			}
+		});
+
+		// Create type options, sorted by count (descending)
+		Object.entries(typeCounts)
+			.sort((a, b) => b[1] - a[1])
+			.forEach(([value, count], index) => {
+				typeOptions.push({
+					id: `type-${index}`,
+					label: value,
+					value,
+					count,
+				});
+			});
+
+		// Add type filter group if we have options
+		if (typeOptions.length > 0) {
+			groups.push({
+				id: 'type',
+				name: 'Type',
+				options: typeOptions,
+			});
+		}
+
+		// Create region options, sorted alphabetically
+		Object.entries(regionCounts)
+			.sort((a, b) => a[0].localeCompare(b[0]))
+			.forEach(([value, count], index) => {
+				regionOptions.push({
+					id: `region-${index}`,
+					label: value,
+					value,
+					count,
+				});
+			});
+
+		// Add region filter group if we have options
+		if (regionOptions.length > 0) {
+			groups.push({
+				id: 'region',
+				name: 'Région',
+				options: regionOptions,
+			});
+		}
+
+		return groups;
+	}, [fortifications]);
+
 	// Update the filter function for fortifications
 	const filteredFortifications = useMemo(() => {
 		if (!searchTerm && Object.keys(activeFilters).length === 0) {
-			return fortifications;
+			// Even with no filters, exclude unnamed structures
+			return fortifications.filter(fort => {
+				const name = fort.properties.name || fort.properties.chpdeno || '';
+				return name.trim() !== '';
+			});
 		}
 
 		return fortifications.filter(fort => {
+			// Filter out structures without names first
+			const name = fort.properties.name || fort.properties.chpdeno || '';
+			if (name.trim() === '') {
+				return false;
+			}
+
 			// Search filter
 			if (searchTerm) {
-				const name = fort.properties.name || fort.properties.chpdeno || '';
 				const address =
 					fort.properties.chpadrs || fort.properties.chplieu || '';
 				const normalizedName = normalizeText(name);
