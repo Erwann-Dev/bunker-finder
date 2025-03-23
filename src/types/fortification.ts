@@ -22,6 +22,7 @@ export interface FortificationProperties {
 
 	// Enhanced properties
 	imageUrls?: string[]; // Array of image URLs for the fortification
+	imageSource?: 'wikipedia' | 'google' | 'other'; // Source of the images
 	description?: string; // Detailed description fetched from external sources
 	period?: string; // Historical period (medieval, renaissance, etc.)
 	constructionStyle?: string; // Architectural style

@@ -1,12 +1,12 @@
 export default {
 	header: {
-		title: 'Carte des Fortifications Françaises',
-		titleShort: 'Fortifications',
+		title: 'Carte des Châteaux et Fortifications',
+		titleShort: 'Châteaux & Forts',
 		toggleSidebar: 'Afficher/Masquer le panneau',
 		toggleDarkMode: 'Mode jour/nuit',
 	},
 	sidebar: {
-		title: 'Fortifications',
+		title: 'Châteaux et Fortifications',
 		search: 'Rechercher',
 		searchPlaceholder: 'Rechercher par nom...',
 		filterByType: 'Filtrer par Type',
@@ -15,7 +15,7 @@ export default {
 		clearAll: 'Effacer tout',
 		showMore: 'Voir plus ({{count}})',
 		showLess: 'Voir moins',
-		fortificationsFound: 'fortifications trouvées',
+		fortificationsFound: 'structures trouvées',
 		enrichedData: 'Données enrichies disponibles',
 		// Filter group names
 		type: 'Type',
@@ -23,27 +23,30 @@ export default {
 		region: 'Région',
 	},
 	map: {
-		unknownFortification: 'Fortification Inconnue',
+		unknownFortification: 'Structure Inconnue',
 		type: 'Type',
 		address: 'Adresse',
 		region: 'Région',
 		period: 'Période',
 		style: 'Style',
 		description: 'Description',
+		details: 'Détails',
 		externalLinks: 'Liens externes',
 		enrichData: "Obtenir plus d'informations",
 		dataUpdated: 'Données mises à jour: {{date}}',
 		notes: 'Notes',
 		notSpecified: 'Non spécifié',
 		noFortificationsFound:
-			'Aucune fortification trouvée correspondant à vos critères',
+			'Aucune structure trouvée correspondant à vos critères',
 		searchingFor: 'Recherche pour',
 		resultsFound: 'résultats trouvés',
 		ignoresAccents: 'La recherche ignore les accents',
-		recenterFrance: 'Recentrer sur la France',
+		recenterWorld: 'Recentrer la carte du monde',
+		other: 'Autre',
 	},
 	fortification: {
 		searchMore: 'Rechercher sur Google',
+		viewImages: 'Voir les images sur Google',
 	},
 	errors: {
 		loadingData: 'Erreur lors du chargement des données',

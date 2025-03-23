@@ -48,7 +48,7 @@ function App() {
 		enrichFortification,
 		filters,
 		isDataEnriched,
-	} = useGeoJSON('assets/export.geojson');
+	} = useGeoJSON('assets/export2.geojson');
 
 	// Check if we're on mobile
 	useEffect(() => {
