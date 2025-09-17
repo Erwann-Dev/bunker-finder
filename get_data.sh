@@ -10,4 +10,7 @@ curl -X POST https://overpass-api.de/api/interpreter \
       relation["historic"~"fort|castle|bunker|fortification"];
     );
     (._;>;);
-    out geom;' > public/assets/export2.geojson
+  out geom;' > public/assets/export2.geojson
+
+# Compress the resulting GeoJSON file
+gzip -c public/assets/export2.geojson > public/assets/export2.geojson.gz
