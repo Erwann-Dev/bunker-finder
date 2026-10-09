@@ -1,15 +1,15 @@
 {
 	"headers": [
 		{
-			"source": "/assets/(.*)\\.gz$",
+			"source": "/data/(.*)\\.gz$",
 			"headers": [
 				{
-					"key": "Content-Encoding",
-					"value": "gzip"
+					"key": "Content-Type",
+					"value": "application/gzip"
 				},
 				{
-					"key": "Content-Type",
-					"value": "application/json"
+					"key": "Cache-Control",
+					"value": "public, max-age=86400"
 				}
 			]
 		}

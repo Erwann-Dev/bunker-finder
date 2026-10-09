@@ -8,12 +8,14 @@ export default defineConfig({
 	css: {
 		devSourcemap: true,
 	},
-	optimizeDeps: {
-		include: ['react-leaflet', 'leaflet', 'react-leaflet-markercluster'],
-	},
-	resolve: {
-		alias: {
-			'@': '/src',
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					leaflet: ['leaflet', 'supercluster'],
+					react: ['react', 'react-dom', 'i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+				},
+			},
 		},
 	},
 });

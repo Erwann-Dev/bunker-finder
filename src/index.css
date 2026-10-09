@@ -1,45 +1,268 @@
-/* Leaflet styles */
 @import 'leaflet/dist/leaflet.css';
-@import 'leaflet.markercluster/dist/MarkerCluster.css';
-@import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-@import "tailwindcss";
-/* Map container styling */
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--font-display: 'Fraunces', ui-serif, Georgia, serif;
+
+	--color-brand-50: #fdf6ee;
+	--color-brand-100: #f9e8d4;
+	--color-brand-200: #f2cda8;
+	--color-brand-300: #e9ab73;
+	--color-brand-400: #df8445;
+	--color-brand-500: #d26a2b;
+	--color-brand-600: #b85321;
+	--color-brand-700: #9a3f1d;
+	--color-brand-800: #7c341e;
+	--color-brand-900: #652d1c;
+
+	--animate-fade-in: fade-in 0.2s ease-out;
+	--animate-slide-up: slide-up 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+	--animate-shimmer: shimmer 1.4s linear infinite;
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+	@keyframes shimmer {
+		from {
+			background-position: -200% 0;
+		}
+		to {
+			background-position: 200% 0;
+		}
+	}
+}
+
+@layer base {
+	html,
+	body,
+	#root {
+		height: 100%;
+		margin: 0;
+		overflow: hidden;
+	}
+	body {
+		@apply bg-stone-100 font-sans text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100;
+		-webkit-tap-highlight-color: transparent;
+	}
+	button {
+		cursor: pointer;
+	}
+	:focus-visible {
+		outline: 2px solid var(--color-brand-500);
+		outline-offset: 2px;
+	}
+}
+
+@utility scrollbar-thin {
+	scrollbar-width: thin;
+	scrollbar-color: color-mix(in oklab, currentColor 25%, transparent) transparent;
+}
+
+@utility no-scrollbar {
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@utility glass {
+	@apply border border-white/60 bg-white/85 shadow-xl shadow-stone-900/10 backdrop-blur-xl dark:border-white/10 dark:bg-stone-900/85 dark:shadow-black/40;
+}
+
+@utility skeleton {
+	background: linear-gradient(
+		90deg,
+		color-mix(in oklab, currentColor 6%, transparent) 25%,
+		color-mix(in oklab, currentColor 14%, transparent) 50%,
+		color-mix(in oklab, currentColor 6%, transparent) 75%
+	);
+	background-size: 200% 100%;
+	animation: var(--animate-shimmer);
+}
+
+/* ------------------------------------------------------------ Leaflet */
+
 .leaflet-container {
+	font-family: var(--font-sans);
+	background: #e7e5e4;
+}
+.dark .leaflet-container {
+	background: #1c1917;
+}
+
+.leaflet-control-attribution {
+	@apply rounded-tl-lg !bg-white/70 px-2 !text-[10px] !text-stone-600 backdrop-blur dark:!bg-stone-900/70 dark:!text-stone-400;
+}
+.leaflet-control-attribution a {
+	@apply !text-stone-700 dark:!text-stone-300;
+}
+
+/* Fortification markers */
+.fm-icon {
+	background: none;
+	border: none;
+}
+.fm {
 	width: 100%;
 	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 1;
-}
-
-/* Make sure tiles are visible */
-.leaflet-tile-container img {
-	width: 256px;
-	height: 256px;
-}
-
-/* Make sure controls appear above tiles */
-.leaflet-control {
-	z-index: 1000;
-}
-
-/* Basic layout styles */
-html,
-body {
-	margin: 0;
-	padding: 0;
-	height: 100%;
-	width: 100%;
-	overflow: hidden;
-}
-
-#root {
-	width: 100%;
-	height: 100%;
+	border-radius: 9999px;
 	display: flex;
-	flex-direction: column;
-	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid #fff;
+	box-shadow:
+		0 1px 2px rgb(0 0 0 / 0.3),
+		0 3px 8px rgb(0 0 0 / 0.25);
+	transition: transform 0.15s ease;
+}
+.fm svg {
+	width: 58%;
+	height: 58%;
+}
+.fm.ruin {
+	border-style: dashed;
+}
+.leaflet-marker-icon:hover .fm {
+	transform: scale(1.18);
+}
+.dark .fm {
+	border-color: #fafaf9;
+}
+
+/* Clusters: a donut showing the mix of categories */
+.fc {
+	width: 100%;
+	height: 100%;
+	border-radius: 9999px;
+	padding: 4px;
+	box-shadow:
+		0 1px 2px rgb(0 0 0 / 0.25),
+		0 4px 12px rgb(0 0 0 / 0.25);
+	transition: transform 0.15s ease;
+}
+.fc span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border-radius: 9999px;
+	background: #fff;
+	color: #1c1917;
+	font-weight: 700;
+	font-size: 12px;
+	letter-spacing: -0.02em;
+}
+.dark .fc span {
+	background: #1c1917;
+	color: #fafaf9;
+}
+.leaflet-marker-icon:hover .fc {
+	transform: scale(1.08);
+}
+
+/* Selected / hovered highlight */
+.fm-highlight {
+	pointer-events: none;
+}
+.fm-highlight .ring {
+	position: absolute;
+	inset: 0;
+	border-radius: 9999px;
+	border: 3px solid var(--color-brand-500);
+	animation: pulse-ring 1.6s ease-out infinite;
+}
+.fm-highlight .fm {
+	transform: scale(1.25);
+}
+.fm-hover .fm {
+	transform: scale(1.3);
+	box-shadow: 0 0 0 4px rgb(210 106 43 / 0.45);
+}
+@keyframes pulse-ring {
+	0% {
+		transform: scale(0.9);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(2.1);
+		opacity: 0;
+	}
+}
+
+.user-dot {
+	width: 18px;
+	height: 18px;
+	border-radius: 9999px;
+	background: #2563eb;
+	border: 3px solid #fff;
+	box-shadow: 0 0 0 6px rgb(37 99 235 / 0.25);
+}
+
+/* Tooltips & popups */
+.leaflet-tooltip.fm-tooltip {
+	@apply rounded-lg border-0 bg-stone-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-lg;
+}
+.leaflet-tooltip.fm-tooltip::before {
+	border-top-color: var(--color-stone-900);
+}
+.fm-tooltip small {
+	@apply block text-[11px] font-normal text-stone-300;
+}
+.dark .leaflet-tooltip.fm-tooltip {
+	@apply bg-stone-100 text-stone-900;
+}
+.dark .leaflet-tooltip.fm-tooltip::before {
+	border-top-color: var(--color-stone-100);
+}
+.dark .fm-tooltip small {
+	@apply text-stone-600;
+}
+
+.leaflet-popup-content-wrapper {
+	@apply rounded-xl shadow-xl dark:bg-stone-900 dark:text-stone-100;
+}
+.dark .leaflet-popup-tip {
+	@apply bg-stone-900;
+}
+.leaflet-popup-content {
+	margin: 10px 12px;
+}
+.cluster-list button {
+	@apply flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-stone-100 dark:hover:bg-stone-800;
+}
+.cluster-list i {
+	width: 10px;
+	height: 10px;
+	border-radius: 9999px;
+	flex-shrink: 0;
+}
+
+/* Base map treatments */
+.tiles-plan {
+	filter: saturate(0.65) contrast(0.95) brightness(1.03);
+}
+.dark .tiles-plan {
+	filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.45);
+}
+.dark .tiles-topo {
+	filter: brightness(0.8) contrast(1.05);
 }
